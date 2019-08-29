@@ -25,6 +25,27 @@ open class ShareImageInstagram {
     public init() {
         
     }
+    func alert (with message :String,title :String = "" , appStoreurl : String , parentVC : UIViewController) {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: .default) { action in
+            if let url = URL(string: appStoreurl),
+                UIApplication.shared.canOpenURL(url)
+            {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        }
+        let CancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
+            print("You've pressed Cancel Button")
+        }
+        alertController.addAction(OKAction)
+        alertController.addAction(CancelAction)
+        parentVC.present(alertController, animated: true, completion: nil)
+    }
     
     public func postToInstagramFeed(image: UIImage, caption: String, bounds: CGRect, view: UIView) {
         
